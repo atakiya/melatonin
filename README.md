@@ -1,6 +1,5 @@
 # BYOND version manager
 
+## License
 
-
-# License
-Currently unlicensed.
+See [LICENSE.md](./LICENSE.md)
