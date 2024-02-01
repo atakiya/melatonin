@@ -46,13 +46,13 @@ pub fn downloadurl_platform_suffix() -> Result<String, UnsupportedOSError> {
 }
 
 pub fn get_projectdir_version(path: PathBuf) -> Result<Option<ByondVersion>> {
-	let version_file = path.join(".byondversion");
-	let file = match version_file.try_exists() {
+	let version_file_path = path.join(".byondversion");
+	let parsed_version = match version_file_path.try_exists() {
 		Err(why) => anyhow::bail!("Couldn't read version file:\n{}", why),
-		Ok(true) => Some(fs::read_to_string(version_file)?.parse::<ByondVersion>()?),
+		Ok(true) => Some(fs::read_to_string(version_file_path)?.parse::<ByondVersion>()?),
 		Ok(false) => None,
 	};
-	Ok(file)
+	Ok(parsed_version)
 }
 
 pub fn userstring_to_byond_version(version_string: &String) -> Result<ByondVersion> {
