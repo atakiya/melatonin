@@ -35,7 +35,7 @@ pub fn construct_download_url(byond_version: &ByondVersion) -> Result<Url> {
 	Ok(url)
 }
 
-pub fn downloadurl_platform_suffix() -> Result<String, UnsupportedOSError> {
+fn downloadurl_platform_suffix() -> Result<String, UnsupportedOSError> {
 	let platform_suffix = match env::consts::OS {
 		"linux" => BYOND_DOWNLOAD_FILENAME_SUFFIX_LINUX,
 		"windows" => BYOND_DOWNLOAD_FILENAME_SUFFIX_WINDOWS,
