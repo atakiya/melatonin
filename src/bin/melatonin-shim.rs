@@ -36,7 +36,7 @@ fn main() -> Result<()> {
 	let current_args = env::args_os().skip(1).collect::<Vec<OsString>>();
 
 	//TODO: Use default installation if no project version
-	let project_version = helpers::get_projectdir_version(current_dir)?.expect("No valid .byondversion file found.");
+	let project_version = helpers::get_projectdir_version(&current_dir)?.expect("No valid .byondversion file found.");
 
 	//TODO: Fix this shitcode
 	let install = match inventory.get(project_version)?.ok_or("") {

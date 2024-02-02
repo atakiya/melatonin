@@ -7,7 +7,7 @@ use crate::helpers::get_projectdir_version;
 
 pub(crate) fn list() -> Result<()> {
 	let manifest = InventoryManifest::new();
-	let current_version = get_projectdir_version(env::current_dir()?)?;
+	let current_version = get_projectdir_version(&env::current_dir()?)?;
 
 	if current_version.is_some() {
 		log::debug!("Current directory has version {} pinned", current_version.unwrap());

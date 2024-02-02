@@ -1,4 +1,4 @@
-use std::{env, error::Error, fmt, fs, path::PathBuf};
+use std::{env, error::Error, fmt, fs, path::Path};
 
 use anyhow::Result;
 use url::Url;
@@ -45,7 +45,7 @@ fn downloadurl_platform_suffix() -> Result<String, UnsupportedOSError> {
 	Ok(platform_suffix.to_owned())
 }
 
-pub fn get_projectdir_version(path: PathBuf) -> Result<Option<ByondVersion>> {
+pub fn get_projectdir_version(path: &Path) -> Result<Option<ByondVersion>> {
 	let version_file_path = path.join(".byondversion");
 	let parsed_version = match version_file_path.try_exists() {
 		Err(why) => anyhow::bail!("Couldn't read version file:\n{}", why),
