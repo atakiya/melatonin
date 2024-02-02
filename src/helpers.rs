@@ -8,6 +8,7 @@ use crate::{byondversion::ByondVersion, pagerdata};
 const BYOND_DOWNLOAD_BASEURL: &str = "https://www.byond.com/download/build/";
 const BYOND_DOWNLOAD_FILENAME_SUFFIX_WINDOWS: &str = "_byond.zip";
 const BYOND_DOWNLOAD_FILENAME_SUFFIX_LINUX: &str = "_byond_linux.zip";
+const VERSION_FILE_NAME: &str = ".byondversion";
 
 #[derive(Debug)]
 pub struct UnsupportedOSError;
