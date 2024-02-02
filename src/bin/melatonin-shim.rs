@@ -26,11 +26,7 @@ use melatonin::manifest::inventory::InventoryManifest;
 use simple_logger::SimpleLogger;
 
 fn main() -> Result<()> {
-	SimpleLogger::new()
-		.with_level(log::LevelFilter::Info)
-		.with_utc_timestamps()
-		.env()
-		.init()?;
+	SimpleLogger::new().with_level(log::LevelFilter::Info).env().init()?;
 	print_debuginfo()?;
 
 	let inventory = InventoryManifest::new();

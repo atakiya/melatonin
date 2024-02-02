@@ -31,7 +31,6 @@ fn main() -> Result<()> {
 
 	SimpleLogger::new()
 		.with_level(cli.verbose.log_level_filter())
-		.with_utc_timestamps()
 		.env()
 		.init()?;
 
