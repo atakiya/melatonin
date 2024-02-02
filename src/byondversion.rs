@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 use std::{error::Error, fmt, str::FromStr};
 
-#[derive(Serialize, Deserialize, PartialEq, Clone, Copy)]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Clone, Copy)]
 pub struct ByondVersion {
 	pub major: u32,
 	pub build: u32,
@@ -42,5 +42,33 @@ impl FromStr for ByondVersion {
 			major: version_fromstr,
 			build: build_fromstr,
 		})
+	}
+}
+
+#[cfg(test)]
+mod tests {
+	use super::*;
+
+	const TEST_VERSIONSTRING_PERIOD: &str = "515.1630";
+	const TEST_VERSIONSTRING_SPACE: &str = "515 1630";
+	const TEST_BYONDVERSION_STRUCT: ByondVersion = ByondVersion {
+		major: 515,
+		build: 1630,
+	};
+
+	#[test]
+	fn test_string_to_version_period() {
+		assert_eq!(
+			TEST_VERSIONSTRING_PERIOD.parse::<ByondVersion>().unwrap(),
+			TEST_BYONDVERSION_STRUCT
+		)
+	}
+
+	#[test]
+	fn test_string_to_version_space() {
+		assert_eq!(
+			TEST_VERSIONSTRING_SPACE.parse::<ByondVersion>().unwrap(),
+			TEST_BYONDVERSION_STRUCT
+		)
 	}
 }

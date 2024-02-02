@@ -37,3 +37,23 @@ impl Directories {
 			.ok_or(anyhow::anyhow!("Couldn't set up project directories."))
 	}
 }
+
+#[cfg(test)]
+mod tests {
+	use super::*;
+
+	#[test]
+	fn test_project_dirs() {
+		assert!(Directories::project_dirs().is_ok())
+	}
+
+	#[test]
+	fn test_data_local_dir() {
+		assert!(Directories::data_local_dir().is_ok())
+	}
+
+	#[test]
+	fn test_bin_local_dir() {
+		assert!(Directories::bin_local_dir().is_ok())
+	}
+}

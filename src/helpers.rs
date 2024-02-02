@@ -47,7 +47,7 @@ fn downloadurl_platform_suffix() -> Result<String, UnsupportedOSError> {
 }
 
 pub fn get_projectdir_version(path: &Path) -> Result<Option<ByondVersion>> {
-	let version_file_path = path.join(".byondversion");
+	let version_file_path = path.join(VERSION_FILE_NAME);
 	let parsed_version = match version_file_path.try_exists() {
 		Err(why) => anyhow::bail!("Couldn't read version file:\n{}", why),
 		Ok(true) => Some(fs::read_to_string(version_file_path)?.parse::<ByondVersion>()?),
@@ -70,4 +70,34 @@ pub fn userstring_to_byond_version(version_string: &String) -> Result<ByondVersi
 	);
 
 	Ok(parsed_version)
+}
+
+#[cfg(test)]
+mod tests {
+	use std::io::Write;
+
+	use super::*;
+
+	const TEST_BYONDVERSION_STRUCT: ByondVersion = ByondVersion {
+		major: 515,
+		build: 1630,
+	};
+
+	#[test]
+	fn test_construct_url() {
+		assert!(construct_download_url(&TEST_BYONDVERSION_STRUCT).is_ok())
+	}
+
+	#[test]
+	fn test_projectdir_version() {
+		let path = env::current_dir().unwrap();
+		let _ = fs::File::create(path.join(VERSION_FILE_NAME))
+			.unwrap()
+			.write_all(TEST_BYONDVERSION_STRUCT.to_string().as_bytes());
+		assert_eq!(
+			get_projectdir_version(&path).unwrap().unwrap(),
+			TEST_BYONDVERSION_STRUCT
+		);
+		let _ = fs::remove_file(path.join(VERSION_FILE_NAME));
+	}
 }
