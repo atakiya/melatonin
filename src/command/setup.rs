@@ -27,6 +27,7 @@ fn setup_shims() -> Result<()> {
 	}
 
 	let local_binary_path = Directories::bin_local_dir()?;
+	let shim_binary_name = format!("{}-shim.exe", env!("CARGO_BIN_NAME"));
 
 	let binaries_to_shim = match env::consts::OS {
 		"linux" => BINARY_TYPES_LINUX,
@@ -36,7 +37,7 @@ fn setup_shims() -> Result<()> {
 
 	for binary in binaries_to_shim {
 		let mut current_exe = env::current_exe()?.canonicalize()?;
-		current_exe.set_file_name("melatonin-shim.exe");
+		current_exe.set_file_name(&shim_binary_name);
 
 		log::debug!(
 			"Setting up hardlink for {}\n\tTarget: {}",
