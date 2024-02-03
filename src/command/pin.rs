@@ -17,10 +17,8 @@ pub(crate) fn pin(version_string: String) -> Result<()> {
 		anyhow::bail!("Directory does not contain a DME file!");
 	};
 
-	let mut version_file = match fs::File::create(&version_file_path) {
-		Err(why) => anyhow::bail!("Couldn't create the version file\n{}", why),
-		Ok(file) => file,
-	};
+	let mut version_file = fs::File::create(&version_file_path)
+		.map_err(|why| anyhow::anyhow!("Couldn't create the version file\n{}", why))?;
 
 	match version_file.write_all(byond_version.to_string().as_bytes()) {
 		Err(why) => anyhow::bail!("Couldn't write to {}: {}", &version_file_path.display(), why),
