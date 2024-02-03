@@ -1,4 +1,4 @@
-name: Test and build via Cargo for Windows
+name: Windows Build & Test
 
 on:
   push:
