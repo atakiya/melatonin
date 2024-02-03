@@ -1,5 +1,9 @@
 # melatonin - BYOND version manager
 
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/atakiya/melatonin/test-windows.yaml)
+![Crates.io Version](https://img.shields.io/crates/v/melatonin)
+![Crates.io License](https://img.shields.io/crates/l/melatonin)
+
 A version manager for the [Build Your Own Net Dream (BYOND)](https://www.byond.com/) software.
 
 ## Installation
