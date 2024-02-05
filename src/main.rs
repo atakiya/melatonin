@@ -16,6 +16,8 @@
 	along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+use std::process::exit;
+
 use crate::cli::{Cli, Commands};
 use anyhow::Result;
 use clap::Parser;
@@ -26,7 +28,17 @@ use simple_logger::SimpleLogger;
 mod cli;
 mod command;
 
-fn main() -> Result<()> {
+fn main() {
+	match run() {
+		Err(why) => {
+			log::error!("{why}");
+			exit(1);
+		}
+		Ok(_) => exit(0),
+	}
+}
+
+fn run() -> Result<()> {
 	let cli = Cli::parse();
 
 	SimpleLogger::new()
