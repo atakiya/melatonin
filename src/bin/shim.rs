@@ -52,10 +52,19 @@ fn main() -> Result<()> {
 	let called_executable_name = current_exe.file_name().expect("Could not get executable name!");
 	let redirected_executable_path = install.path.join("byond/bin").join(called_executable_name);
 
-	let mut exe = Command::new(redirected_executable_path);
-	exe.args(current_args).status()?;
+	match redirected_executable_path.try_exists() {
+		Err(why) => anyhow::bail!("Could not check if the executable exists!\n\tReason: {}", why),
+		Ok(false) => anyhow::bail!(
+			"Could not find the executable - does BYOND version {} have it?",
+			project_version
+		),
+		Ok(true) => {
+			let mut exe = Command::new(redirected_executable_path);
+			exe.args(current_args).status()?;
 
-	Ok(())
+			Ok(())
+		}
+	}
 }
 
 fn print_debuginfo() -> Result<()> {
