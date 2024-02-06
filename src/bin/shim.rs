@@ -21,22 +21,21 @@ use std::process::Command;
 use std::{env, fmt::Write};
 
 use anyhow::Result;
-use melatonin::helpers;
 use melatonin::manifest::inventory::InventoryManifest;
+use melatonin::versionfile;
 use simple_logger::SimpleLogger;
 
 fn main() -> Result<()> {
-	SimpleLogger::new().with_level(log::LevelFilter::Info).env().init()?;
+	SimpleLogger::new().with_level(log::LevelFilter::Warn).env().init()?;
 	print_debuginfo()?;
 
 	let inventory = InventoryManifest::new();
 
-	let current_dir = env::current_dir()?;
 	let current_exe = env::current_exe()?;
 	let current_args = env::args_os().skip(1).collect::<Vec<OsString>>();
 
-	//TODO: Use default installation if no project version
-	let project_version = helpers::get_projectdir_version(&current_dir)?.expect("No valid .byondversion file found.");
+	let project_version = versionfile::get_currently_used_byondversion()?
+		.expect("Could not determine what version to use, no global or local version set!");
 
 	//TODO: Fix this shitcode
 	let install = match inventory.get(project_version)?.ok_or("") {

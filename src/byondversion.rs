@@ -1,26 +1,12 @@
 use serde::{Deserialize, Serialize};
-use std::{error::Error, fmt, str::FromStr};
+use std::{fmt, str::FromStr};
+
+use crate::errors::ParseByondVersionError;
 
 #[derive(Serialize, Deserialize, Debug, PartialEq, Clone, Copy)]
 pub struct ByondVersion {
 	pub major: u32,
 	pub build: u32,
-}
-
-/* ParseByondVersionError stuff */
-#[derive(Debug)]
-pub struct ParseByondVersionError;
-
-impl Error for ParseByondVersionError {
-	fn description(&self) -> &str {
-		"failed to parse byondversion"
-	}
-}
-
-impl fmt::Display for ParseByondVersionError {
-	fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-		"provided string could not be parsed into a valid BYOND version".fmt(f)
-	}
 }
 
 impl fmt::Display for ByondVersion {

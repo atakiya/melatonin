@@ -22,7 +22,6 @@ use crate::cli::{Cli, Commands};
 use anyhow::Result;
 use clap::Parser;
 use command::*;
-use melatonin::helpers;
 use simple_logger::SimpleLogger;
 
 mod cli;
@@ -50,7 +49,11 @@ fn run() -> Result<()> {
 		Commands::Fetch { beta } => fetch::fetch(beta),
 		Commands::Install { version } => install::install(version),
 		Commands::List {} => list::list(),
-		Commands::Pin { version } => pin::pin(version),
+		Commands::Pin {
+			global,
+			version,
+			directory,
+		} => pin::pin(global, version, directory),
 		Commands::Setup {} => setup::setup(),
 		Commands::Uninstall { version } => uninstall::uninstall(version),
 	}

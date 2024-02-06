@@ -1,4 +1,4 @@
-use crate::{byondversion::ByondVersion, directories::Directories};
+use crate::{byondversion::ByondVersion, paths::files::Files};
 use anyhow::Result;
 use serde::{Deserialize, Serialize};
 use std::{
@@ -7,7 +7,6 @@ use std::{
 	path::PathBuf,
 };
 
-const INV_MANIFEST_FILENAME: &str = "inventory.json";
 const INV_MANIFEST_VERSION: u32 = 1;
 
 #[derive(Clone)]
@@ -42,7 +41,7 @@ impl Default for InventoryManifest {
 impl InventoryManifest {
 	pub fn new() -> Self {
 		InventoryManifest {
-			path: Directories::data_local_dir().unwrap().join(INV_MANIFEST_FILENAME),
+			path: Files::inventory_manifest_file(),
 		}
 	}
 
@@ -98,12 +97,13 @@ impl InventoryManifest {
 			},
 		};
 
-		manifest.entries.retain(|entry| match entry.path.try_exists() {
-			Err(_) => {
-				log::warn!("Couldn't access {}, invalidating file.", entry.path.display());
+		manifest.entries.retain(|entry| {
+			entry.path.try_exists().unwrap_or_else(|why| {
+				let filepath_display = entry.path.display();
+				log::debug!("Couldn't access {}\n\tReason: {}", filepath_display, why);
+				log::warn!("Couldn't access {}, invalidating file.", filepath_display);
 				false
-			}
-			Ok(does_exist) => does_exist,
+			})
 		});
 
 		Ok(manifest)

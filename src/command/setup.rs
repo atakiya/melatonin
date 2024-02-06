@@ -2,7 +2,7 @@ use std::{env, fs, process::Command};
 
 use anyhow::Result;
 
-use melatonin::{directories::Directories, helpers::UnsupportedOSError};
+use melatonin::{errors::UnsupportedOSError, paths::directories::Directories};
 use winreg::{enums::HKEY_CURRENT_USER, RegKey};
 
 const BINARY_TYPES_LINUX: &[&str] = &["DreamDaemon", "DreamDownload", "DreamMaker"];
@@ -26,7 +26,7 @@ fn setup_shims() -> Result<()> {
 		todo!()
 	}
 
-	let local_binary_path = Directories::bin_local_dir()?;
+	let local_binary_path = Directories::bin_local_dir();
 	let shim_binary_name = format!("{}-shim.exe", env!("CARGO_BIN_NAME"));
 
 	let binaries_to_shim = match env::consts::OS {

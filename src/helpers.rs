@@ -1,33 +1,13 @@
-use std::{env, error::Error, fmt, fs, path::Path};
+use std::env;
 
 use anyhow::Result;
 use url::Url;
 
-use crate::{byondversion::ByondVersion, pagerdata};
+use crate::{byondversion::ByondVersion, errors, pagerdata};
 
 const BYOND_DOWNLOAD_BASEURL: &str = "https://www.byond.com/download/build/";
 const BYOND_DOWNLOAD_FILENAME_SUFFIX_WINDOWS: &str = "_byond.zip";
 const BYOND_DOWNLOAD_FILENAME_SUFFIX_LINUX: &str = "_byond_linux.zip";
-const VERSION_FILE_NAME: &str = ".byondversion";
-
-#[derive(Debug)]
-pub struct UnsupportedOSError;
-
-impl Error for UnsupportedOSError {
-	fn description(&self) -> &str {
-		"unsupported OS configuration"
-	}
-}
-
-impl fmt::Display for UnsupportedOSError {
-	fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-		write!(
-			f,
-			"could not determine a supported OS configuration ({})",
-			env::consts::OS
-		)
-	}
-}
 
 pub fn construct_download_url(byond_version: &ByondVersion) -> Result<Url> {
 	let url = Url::parse(BYOND_DOWNLOAD_BASEURL)?
@@ -36,24 +16,14 @@ pub fn construct_download_url(byond_version: &ByondVersion) -> Result<Url> {
 	Ok(url)
 }
 
-fn downloadurl_platform_suffix() -> Result<String, UnsupportedOSError> {
+fn downloadurl_platform_suffix() -> Result<String, errors::UnsupportedOSError> {
 	let platform_suffix = match env::consts::OS {
 		"linux" => BYOND_DOWNLOAD_FILENAME_SUFFIX_LINUX,
 		"windows" => BYOND_DOWNLOAD_FILENAME_SUFFIX_WINDOWS,
-		_ => return Err(UnsupportedOSError),
+		_ => return Err(errors::UnsupportedOSError),
 	};
 
 	Ok(platform_suffix.to_owned())
-}
-
-pub fn get_projectdir_version(path: &Path) -> Result<Option<ByondVersion>> {
-	let version_file_path = path.join(VERSION_FILE_NAME);
-	let parsed_version = match version_file_path.try_exists() {
-		Err(why) => anyhow::bail!("Couldn't read version file:\n{}", why),
-		Ok(true) => Some(fs::read_to_string(version_file_path)?.parse::<ByondVersion>()?),
-		Ok(false) => None,
-	};
-	Ok(parsed_version)
 }
 
 pub fn userstring_to_byond_version(version_string: &String) -> Result<ByondVersion> {
@@ -74,8 +44,6 @@ pub fn userstring_to_byond_version(version_string: &String) -> Result<ByondVersi
 
 #[cfg(test)]
 mod tests {
-	use std::io::Write;
-
 	use super::*;
 
 	const TEST_BYONDVERSION_STRUCT: ByondVersion = ByondVersion {
@@ -86,18 +54,5 @@ mod tests {
 	#[test]
 	fn test_construct_url() {
 		assert!(construct_download_url(&TEST_BYONDVERSION_STRUCT).is_ok())
-	}
-
-	#[test]
-	fn test_projectdir_version() {
-		let path = env::current_dir().unwrap();
-		let _ = fs::File::create(path.join(VERSION_FILE_NAME))
-			.unwrap()
-			.write_all(TEST_BYONDVERSION_STRUCT.to_string().as_bytes());
-		assert_eq!(
-			get_projectdir_version(&path).unwrap().unwrap(),
-			TEST_BYONDVERSION_STRUCT
-		);
-		let _ = fs::remove_file(path.join(VERSION_FILE_NAME));
 	}
 }

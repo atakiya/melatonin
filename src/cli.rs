@@ -1,3 +1,5 @@
+use std::path::PathBuf;
+
 use clap::{Parser, Subcommand};
 
 #[derive(Parser)]
@@ -22,7 +24,12 @@ pub(super) enum Commands {
 	/// List all installed versions
 	List {},
 	/// Pin a specific version to the current project
-	Pin { version: String },
+	Pin {
+		#[arg(long, short)]
+		global: bool,
+		version: String,
+		directory: Option<PathBuf>,
+	},
 	/// Setup shims and other environmental settings
 	Setup {},
 	/// Uninstall a previously installed version

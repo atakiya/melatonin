@@ -3,13 +3,11 @@ use std::fs::File;
 use anyhow::Result;
 use downloader::Downloader;
 use melatonin::{
-	directories::Directories,
 	helpers::{self, userstring_to_byond_version},
 	manifest::inventory::{ByondArchive, ByondInstallation, InventoryManifest},
+	paths::directories::Directories,
 };
 use zip::ZipArchive;
-
-const INSTALLED_INVENTORY_PATH_SUFFIX: &str = "inventory";
 
 pub(crate) fn install(version_string: String) -> Result<()> {
 	log::info!("Requested version to install: {version_string}");
@@ -46,10 +44,7 @@ pub(crate) fn install(version_string: String) -> Result<()> {
 
 	match File::open(downloaded.path) {
 		Ok(file) => {
-			let destination = Directories::data_local_dir()?
-				.join(INSTALLED_INVENTORY_PATH_SUFFIX)
-				.join(downloaded.version.to_string());
-
+			let destination = Directories::inventory_dir().join(downloaded.version.to_string());
 			let mut zip = ZipArchive::new(file)?;
 			zip.extract(&destination)?;
 			inventory.add(ByondInstallation {
