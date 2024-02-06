@@ -71,12 +71,12 @@ fn print_debuginfo() -> Result<()> {
 	log::debug!(
 		"ARG: {}",
 		env::args_os().fold(String::new(), |mut output, arg| {
-			let _ = write!(output, "{},", arg.to_str().unwrap_or(""));
+			let _ = write!(output, "{},", arg.to_string_lossy());
 			output
 		})
 	);
-	log::debug!("DIR: {}", env::current_dir()?.to_str().unwrap_or(""));
-	log::debug!("EXE: {}", env::current_exe()?.to_str().unwrap_or(""));
+	log::debug!("DIR: {}", env::current_dir()?.to_string_lossy());
+	log::debug!("EXE: {}", env::current_exe()?.to_string_lossy());
 	log::debug!("CANON: {}", env::current_exe()?.canonicalize()?.display());
 	Ok(())
 }
