@@ -9,6 +9,10 @@ const REGEXP_LATEST_VERSION: &str = r#"latest_version:\s+["'](?P<version>\d+)\.(
 const REGEXP_BETA_VERSION: &str = r#"beta_version:\s+["'](?P<version>\d+)\.(?P<build>\d+)["'],?"#;
 
 pub fn latest_version(beta: bool) -> Result<ByondVersion> {
+	log::debug!(
+		"Attempting to fetch latest {} version of BYOND...",
+		if beta { "beta" } else { "stable" }
+	);
 	let channel_expression = match beta {
 		// Beta version requested
 		true => REGEXP_BETA_VERSION,
@@ -33,7 +37,8 @@ pub fn latest_version(beta: bool) -> Result<ByondVersion> {
 }
 
 fn request() -> Result<String> {
+	log::debug!("Creating and sending request to remote...");
 	let pager_data = minreq::get(BYOND_PAGER_URL).with_timeout(REQUEST_TIMEOUT).send()?;
-
-	Ok(String::from(pager_data.as_str()?))
+	let pager_data = String::from(pager_data.as_str()?);
+	Ok(pager_data)
 }
