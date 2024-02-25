@@ -35,23 +35,31 @@ impl Directories {
 
 	pub fn bin_local_dir() -> PathBuf {
 		let base_dirs = Self::base_dirs();
-		let project_dirs = Self::project_dirs();
-		let local_bin_dir = base_dirs.data_local_dir().join(project_dirs.project_path()).join("bin");
 
-		if !local_bin_dir
-			.try_exists()
-			.expect("Could not check if the local data directory exists.")
-		{
-			fs::create_dir_all(&local_bin_dir).unwrap_or_else(|why| {
-				panic!(
-					"Could not create the directory at {}\nReason: {}",
-					local_bin_dir.display(),
-					why
-				)
-			});
-		};
+		let mut local_bin_dir: Option<PathBuf> = None;
 
-		local_bin_dir
+		// There's probably a better way to do this...
+		if cfg!(target_os = "windows") {
+			let project_dirs = Self::project_dirs();
+			local_bin_dir = Some(base_dirs.data_local_dir().join(project_dirs.project_path()).join("bin"));
+		} else if cfg!(target_os = "linux") {
+			local_bin_dir = Some(base_dirs.executable_dir().unwrap().to_path_buf());
+		}
+
+		if let Some(dir) = local_bin_dir {
+			if !dir
+				.try_exists()
+				.expect("Could not check if the local data directory exists.")
+			{
+				fs::create_dir_all(&dir).unwrap_or_else(|why| {
+					panic!("Could not create the directory at {}\nReason: {}", dir.display(), why)
+				});
+			};
+
+			dir
+		} else {
+			panic!("Unsupported target platform!")
+		}
 	}
 
 	fn base_dirs() -> BaseDirs {

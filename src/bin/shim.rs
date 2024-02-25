@@ -31,8 +31,8 @@ fn main() -> Result<()> {
 
 	let inventory = InventoryManifest::new();
 
-	let current_exe = env::current_exe()?;
 	let current_args = env::args_os().skip(1).collect::<Vec<OsString>>();
+	let current_exe = env::current_exe()?;
 
 	let project_version = versionfile::get_currently_used_byondversion()?
 		.expect("Could not determine what version to use, no global or local version set!");
@@ -49,17 +49,44 @@ fn main() -> Result<()> {
 	};
 
 	let called_executable_name = current_exe.file_name().expect("Could not get executable name!");
-	let redirected_executable_path = install.path.join("byond/bin").join(called_executable_name);
+	let shimmed_bin_path = install.path.join("byond/bin");
+	let shimmed_exe_path = shimmed_bin_path.join(called_executable_name);
 
-	match redirected_executable_path.try_exists() {
+	log::debug!("Shimmed exe path: {}", shimmed_exe_path.display());
+
+	match shimmed_exe_path.try_exists() {
 		Err(why) => anyhow::bail!("Could not check if the executable exists!\n\tReason: {}", why),
 		Ok(false) => anyhow::bail!(
 			"Could not find the executable - does BYOND version {} have it?",
 			project_version
 		),
 		Ok(true) => {
-			let mut exe = Command::new(redirected_executable_path);
-			exe.args(current_args).status()?;
+			let mut exe: Command;
+			#[allow(unused_mut)]
+			let mut args: Vec<OsString> = current_args;
+
+			#[cfg(target_os = "linux")]
+			{
+				args.insert(0, "--library-path".into());
+				args.insert(1, shimmed_bin_path.into());
+				args.insert(2, shimmed_exe_path.into());
+				exe = Command::new("/lib/ld-linux.so.2");
+			}
+			#[cfg(target_os = "windows")]
+			{
+				exe = Command::new(&shimmed_exe_path);
+			}
+
+			exe.args(args);
+			log::debug!("Running {}", exe.get_program().to_string_lossy());
+			log::debug!(
+				"With arguments\n{}",
+				exe.get_args().fold(String::new(), |mut out, arg| {
+					let _ = writeln!(out, "\t{}", arg.to_string_lossy());
+					out
+				})
+			);
+			exe.status().expect("Could not execute process");
 
 			Ok(())
 		}
@@ -68,9 +95,9 @@ fn main() -> Result<()> {
 
 fn print_debuginfo() -> Result<()> {
 	log::debug!(
-		"ARG: {}",
+		"ARGS:\n{}",
 		env::args_os().fold(String::new(), |mut output, arg| {
-			let _ = write!(output, "{},", arg.to_string_lossy());
+			let _ = writeln!(output, "\t{}", arg.to_string_lossy());
 			output
 		})
 	);
