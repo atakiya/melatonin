@@ -1,10 +1,12 @@
-# melatonin - BYOND version manager
+# 💊 Melatonin - BYOND version manager
 
-[![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/atakiya/melatonin/test-windows.yaml)](https://github.com/atakiya/melatonin/actions)
-[![Crates.io Version](https://img.shields.io/crates/v/melatonin)](https://crates.io/crates/melatonin)
-[![Crates.io License](https://img.shields.io/crates/l/melatonin)](./LICENSE.md)
+[![][badge-status-test]](https://github.com/atakiya/melatonin/actions)
+[![][badge-crates-version]](https://crates.io/crates/melatonin)
+[![][badge-crates-license]](./LICENSE.md)
 
 A version manager for the [Build Your Own Net Dream (BYOND)](https://www.byond.com/) software.
+
+Contributions and improvements are very welcome, as this is my first Rust-based project.
 
 ## Installation
 
@@ -42,9 +44,14 @@ For all commands and help, simply run `bvm --help`
 
 ## License
 
-See [LICENSE.md](./LICENSE.md)
+[![GNU General Public License v3 or later](https://www.gnu.org/graphics/gplv3-127x51.png)](https://www.gnu.org/licenses/gpl-3.0.html)
+See [LICENSE.md](./LICENSE.md) for more information.
 
 ## Copyright notice
 
 Copyright ©️ 2024 Avunia Takiya - All Rights Reserved  
 Build Your Own Net Dream is Copyright ©️ BYOND Software
+
+[badge-status-test]: https://img.shields.io/github/actions/workflow/status/atakiya/melatonin/test-windows.yaml "CI test status"
+[badge-crates-version]: https://img.shields.io/crates/v/melatonin "Crates.io Version"
+[badge-crates-license]: https://img.shields.io/crates/l/melatonin "Crates.io License"
