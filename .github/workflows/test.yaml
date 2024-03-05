@@ -1,0 +1,38 @@
+name: Build & Test
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  test:
+    strategy:
+      matrix:
+        os:
+          - ubuntu
+          - windows
+    runs-on: ${{ matrix.os }}-latest
+    name: test-${{ matrix.os }}
+    env:
+      RUST_BACKTRACE: full
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: Swatinem/rust-cache@23bce251a8cd2ffc3c1075eaa2367cf899916d84
+
+      - name: Check 🔍
+        run: cargo check --verbose
+
+      - name: Build 🔨
+        run: cargo build --verbose
+
+      - name: Run tests 🧪
+        run: cargo test --verbose
