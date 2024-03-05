@@ -5,9 +5,6 @@ on:
     tags: v*
   workflow_dispatch:
 
-env:
-  BINARY_NAME: bvm
-
 jobs:
   build:
     strategy:
@@ -27,10 +24,10 @@ jobs:
         with:
           name: build-${{ matrix.os }}
           path: |
-            target/release/$BINARY_NAME
-            target/release/$BINARY_NAME-shim
-            target/release/$BINARY_NAME.exe
-            target/release/$BINARY_NAME-shim.exe
+            target/release/bvm
+            target/release/bvm-shim
+            target/release/bvm.exe
+            target/release/bvm-shim.exe
 
   publish:
     needs: build
@@ -71,5 +68,5 @@ jobs:
       - uses: shogo82148/actions-upload-release-asset@c91b7fd867cf280772374042252f0dc8e1ade751
         name: Upload binaries ⬆️📦
         with:
-          asset_path: ${{ steps.download_artifact.outputs.download-path }}/$BINARY_NAME*
+          asset_path: ${{ steps.download_artifact.outputs.download-path }}/bvm*
           upload_url: ${{ steps.create_release.outputs.upload_url }}
