@@ -60,7 +60,6 @@ jobs:
         id: create_release
         with:
           draft: true
-          prerelease: ${{ endsWith(github.ref, '-beta') }}
           body_path: CHANGELOG.md
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
