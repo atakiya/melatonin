@@ -52,6 +52,6 @@ See [LICENSE.md](./LICENSE.md) for more information.
 Copyright ©️ 2024 Avunia Takiya - All Rights Reserved  
 Build Your Own Net Dream is Copyright ©️ BYOND Software
 
-[badge-status-test]: https://img.shields.io/github/actions/workflow/status/atakiya/melatonin/test-windows.yaml "CI test status"
+[badge-status-test]: https://img.shields.io/github/actions/workflow/status/atakiya/melatonin/test.yaml?label=tests "CI/CD tests status"
 [badge-crates-version]: https://img.shields.io/crates/v/melatonin "Crates.io Version"
 [badge-crates-license]: https://img.shields.io/crates/l/melatonin "Crates.io License"
