@@ -25,14 +25,16 @@ jobs:
       RUST_BACKTRACE: full
     steps:
       - uses: actions/checkout@v4
+        name: Checkout Repository 📥
 
       - uses: Swatinem/rust-cache@23bce251a8cd2ffc3c1075eaa2367cf899916d84
+        name: Set up Cache
 
-      - name: Check 🔍
-        run: cargo check --verbose
+      - run: cargo check --verbose
+        name: Check 🔍
 
-      - name: Build 🔨
-        run: cargo build --verbose
+      - run: cargo build --verbose
+        name: Build 🔨
 
-      - name: Run tests 🧪
-        run: cargo test --verbose
+      - run: cargo test --verbose
+        name: Run Tests 🧪
