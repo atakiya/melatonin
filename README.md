@@ -42,6 +42,38 @@ For the currently installed versions, run `bvm list`
 
 For all commands and help, simply run `bvm --help`
 
+### Container Image
+
+Container images are released along with semver tags  
+Images are tagged as (example semver `v1.2.3`)
+
+-   `v1.2.3` - full version
+-   `v1.2` - major and minor
+-   `v1` - major
+-   `latest`
+
+Example `Dockerfile` for a BYOND project previously pinned with melatonin:
+
+```Dockerfile
+FROM ghcr.io/atakiya/melatonin
+
+WORKDIR /app
+
+# Assuming you're building from your project's root
+COPY . .
+
+# Setup shims and install the in the project pinned version of BYOND
+RUN bvm setup \
+	bvm install $(cat .byondversion)\
+
+# Compile the project
+RUN DreamMaker -verbose *.dme
+
+# And run a dedicated server!
+ENTRYPOINT [ "DreamDaemon" ]
+CMD [ "*.dmb", "5513", "-invisible", "-trusted" ]
+```
+
 ## License
 
 [![GNU General Public License v3 or later](https://www.gnu.org/graphics/gplv3-127x51.png)](https://www.gnu.org/licenses/gpl-3.0.html)

@@ -30,7 +30,7 @@ jobs:
             target/release/bvm.exe
             target/release/bvm-shim.exe
 
-  publish:
+  publish-crates:
     needs: build
     runs-on: ubuntu-latest
     steps:
@@ -42,6 +42,49 @@ jobs:
         name: Publish on Crates.io 📦
         env:
           CRATES_TOKEN: ${{ secrets.CRATES_TOKEN }}
+
+  publish-ghcr:
+    needs: build
+    runs-on: ubuntu-latest
+    env:
+      GHCR_REGISTRY: ghcr.io
+      GHCR_REPO: ${{ github.repository }}
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+        name: Checkout Repository 📥
+
+      - uses: docker/metadata-action@v5
+        id: metadata
+        name: Collect Image Metadata
+        with:
+          images: ${{ env.GHCR_REGISTRY }}/${{ env.GHCR_REPO }}
+          tags: |
+            type=raw,value=latest,enable={{is_default_branch}}
+            type=semver,pattern=v{{version}}
+            type=semver,pattern=v{{major}}.{{minor}}
+            type=semver,pattern=v{{major}},enable=${{ !startsWith(github.ref, 'refs/tags/v0.') }}
+
+      - uses: docker/setup-buildx-action@v3
+        name: Setup Buildx 🧰
+
+      - uses: docker/login-action@v3
+        name: Login into GHCR 🔑
+        if: github.event_name != 'pull_request'
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: docker/build-push-action@v5
+        name: Build and Push Container Image
+        with:
+          context: .
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.metadata.outputs.tags }}
+          labels: ${{ steps.metadata.outputs.labels }}
 
   release:
     needs: build
