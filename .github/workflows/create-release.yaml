@@ -15,6 +15,7 @@ jobs:
     runs-on: ${{ matrix.os }}-latest
     steps:
       - uses: actions/checkout@v4
+        name: Checkout Repository 📥
 
       - run: cargo build --release --verbose
         name: Build 🔨
@@ -32,9 +33,9 @@ jobs:
   publish:
     needs: build
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
+        name: Checkout Repository 📥
 
       # We can pass --no-verify here as the build is already verified with the previous job
       - run: cargo publish --no-verify --token ${CRATES_TOKEN}
@@ -45,7 +46,6 @@ jobs:
   release:
     needs: build
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/download-artifact@v4
         name: Download Artifacts ⬇️
