@@ -103,7 +103,7 @@ jobs:
         id: create_release
         with:
           draft: true
-          body_path: ${{ github.workspace }}/.github/workflows/CHANGELOG.md
+          body_path: ${{ github.workspace }}/.github/CHANGELOG.md
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
