@@ -2,7 +2,7 @@
 
 ## [unreleased]
 
-## [0.7.6-beta] - 2024-02-25
+## [0.7.7] - 2024-03-05
 
 ### Added
 
@@ -30,7 +30,7 @@
 -   Pinning version per BYOND project
 -   Shimming of CLI executables
 
-[unreleased]: https://github.com/atakiya/melatonin/compare/v0.7.6-beta...HEAD
-[0.7.6-beta]: https://github.com/atakiya/melatonin/releases/tag/v0.7.6-beta
+[unreleased]: https://github.com/atakiya/melatonin/compare/v0.7.7...HEAD
+[0.7.7]: https://github.com/atakiya/melatonin/releases/tag/v0.7.7
 [0.6.4-beta]: https://github.com/atakiya/melatonin/releases/tag/v0.6.4-beta
 [0.5.0-beta]: https://github.com/atakiya/melatonin/releases/tag/v0.5.0-beta
