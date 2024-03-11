@@ -2,6 +2,11 @@
 
 ## [unreleased]
 
+## [0.7.8] - 2024-03-11
+
+Re-release of 0.7.7 code for CI/CD to build a container image.  
+Now available at [ghcr.io/atakiya/melatonin](https://ghcr.io/atakiya/melatonin)
+
 ## [0.7.7] - 2024-03-05
 
 ### Added
@@ -30,7 +35,8 @@
 -   Pinning version per BYOND project
 -   Shimming of CLI executables
 
-[unreleased]: https://github.com/atakiya/melatonin/compare/v0.7.7...HEAD
+[unreleased]: https://github.com/atakiya/melatonin/compare/v0.7.8...HEAD
+[0.7.8]: https://github.com/atakiya/melatonin/releases/tag/v0.7.8
 [0.7.7]: https://github.com/atakiya/melatonin/releases/tag/v0.7.7
 [0.6.4-beta]: https://github.com/atakiya/melatonin/releases/tag/v0.6.4-beta
 [0.5.0-beta]: https://github.com/atakiya/melatonin/releases/tag/v0.5.0-beta
