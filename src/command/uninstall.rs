@@ -1,14 +1,14 @@
 use std::fs;
 
 use anyhow::Result;
-use melatonin::{byondversion::ByondVersion, manifest::inventory::InventoryManifest};
+use melatonin::{helpers::userstring_to_byond_version, manifest::inventory::InventoryManifest};
 
 pub(crate) fn uninstall(version_string: String) -> Result<()> {
 	log::info!("Requested version to uninstall: {version_string}");
 
 	let inventory = InventoryManifest::new();
 
-	let byond_version: ByondVersion = version_string.parse::<ByondVersion>()?;
+	let byond_version = userstring_to_byond_version(&version_string)?;
 
 	log::debug!("Parsed BYOND version to uninstall: {}", byond_version);
 

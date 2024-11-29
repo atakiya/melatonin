@@ -22,7 +22,7 @@ pub(super) enum Commands {
 	/// Install a new version
 	Install { version: String },
 	/// List all installed versions
-	List {},
+	List,
 	/// Pin a specific version to the current project
 	Pin {
 		#[arg(long, short)]
@@ -34,4 +34,6 @@ pub(super) enum Commands {
 	Setup {},
 	/// Uninstall a previously installed version
 	Uninstall { version: String },
+	/// Prints the install directory the given version is installed in.
+	Prefix { version: String },
 }

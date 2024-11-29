@@ -13,6 +13,7 @@ pub(crate) fn install(version_string: String) -> Result<()> {
 	log::info!("Requested version to install: {version_string}");
 
 	let inventory = InventoryManifest::new();
+	let is_first_install = inventory.get_all()?.is_empty();
 
 	let byond_version = userstring_to_byond_version(&version_string)?;
 
@@ -50,8 +51,13 @@ pub(crate) fn install(version_string: String) -> Result<()> {
 			inventory.add(ByondInstallation {
 				path: destination,
 				version: downloaded.version,
-			})
+			})?;
 		}
 		Err(why) => anyhow::bail!("Oops, we did a fucky wucky! OwO\n{}", why),
 	}
+	if is_first_install {
+		melatonin::versionfile::set_global_version(byond_version)?;
+		log::info!("Global default version set to {byond_version}");
+	}
+	Ok(())
 }

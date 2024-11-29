@@ -65,7 +65,14 @@ fn read_versionfile(path: &Path) -> Result<Option<ByondVersion>> {
 }
 
 fn write_versionfile(directory: &Path, version: ByondVersion) -> Result<()> {
-	let versionfile_path = directory.join(Files::versionpin_filename());
+	let versionfile_path: PathBuf = if directory
+		.file_name()
+		.is_some_and(|filename| filename == Files::versionpin_filename())
+	{
+		directory.into()
+	} else {
+		directory.join(Files::versionpin_filename())
+	};
 	let mut versionfile = fs::File::create(&versionfile_path).map_err(|why| {
 		anyhow::anyhow!(
 			"Could not create the {} file at {}\n\tReason: {}",

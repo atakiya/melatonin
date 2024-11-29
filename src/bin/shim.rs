@@ -38,18 +38,15 @@ fn main() -> Result<()> {
 		.expect("Could not determine what version to use, no global or local version set!");
 
 	//TODO: Fix this shitcode
-	let install = match inventory.get(project_version)?.ok_or("") {
-		Err(_) => {
-			log::error!("Project has version {} pinned, but is not installed.", project_version);
-			//TODO: Ask user if they would like to install the missing version(?) or just abort.
-			// Abort for now.
-			anyhow::bail!("Missing version for project.")
-		}
-		Ok(install) => install,
-	};
+	let install = inventory.get(project_version)?.ok_or_else(|| {
+		log::error!("Project has version {} pinned, but is not installed.", project_version);
+		//TODO: Ask user if they would like to install the missing version(?) or just abort.
+		// Abort for now.
+		anyhow::anyhow!("Missing version for project.")
+	})?;
 
 	let called_executable_name = current_exe.file_name().expect("Could not get executable name!");
-	let shimmed_bin_path = install.path.join("byond/bin");
+	let shimmed_bin_path = install.path.join("byond").join("bin");
 	let shimmed_exe_path = shimmed_bin_path.join(called_executable_name);
 
 	log::debug!("Shimmed exe path: {}", shimmed_exe_path.display());
