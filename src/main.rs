@@ -48,7 +48,7 @@ fn run() -> Result<()> {
 	match cli.command {
 		Commands::Fetch { beta } => fetch::fetch(beta),
 		Commands::Install { version } => install::install(version),
-		Commands::List {} => list::list(),
+		Commands::List => list::list(),
 		Commands::Pin {
 			global,
 			version,
@@ -56,5 +56,6 @@ fn run() -> Result<()> {
 		} => pin::pin(global, version, directory),
 		Commands::Setup {} => setup::setup(),
 		Commands::Uninstall { version } => uninstall::uninstall(version),
+		Commands::Prefix { version } => prefix::prefix(version),
 	}
 }

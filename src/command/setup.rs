@@ -47,9 +47,8 @@ fn setup_shims() -> Result<()> {
 			fs::remove_file(&binary_path)?;
 		}
 
-		fs::hard_link(&current_exe, &binary_path).map_err(|op| {
+		fs::hard_link(&current_exe, &binary_path).inspect_err(|_| {
 			log::error!("Could not set up hardlink for {}", binary_path.display());
-			op
 		})?
 	}
 

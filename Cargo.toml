@@ -20,32 +20,22 @@ name = "bvm-shim"
 path = "src/bin/shim.rs"
 
 [dependencies]
-anyhow = "~1.0.75"
-clap = { version = "~4.5.0", default-features = false, features = [
-	"derive",
-	"env",
-	"unicode",
-	"wrap_help",
-] }
-clap-verbosity-flag = "~2.2.0"
-colored = "~2.1.0"
-directories = "~5.0.1"
-downloader = "~0.2.7"
-indicatif = "~0.17.7"
-log = "~0.4.20"
-minreq = { version = "~2.11.0", features = ["https"] }
-regex = "~1.10.2"
-serde = { version = "~1.0.193", default-features = false, features = [
-	"derive",
-	"std",
-] }
-serde_json = "~1.0.108"
-simple_logger = { version = "~4.3.0", default-features = false, features = [
-	"colored",
-] }
-tempfile = "~3.10.0"
-url = "~2.5.0"
-zip = { version = "~0.6.6", default-features = false, features = ["deflate"] }
+anyhow = "1"
+clap = { version = "4", default-features = false, features = ["derive", "env", "unicode", "wrap_help"] }
+clap-verbosity-flag = "3"
+colored = "2"
+directories = "5"
+downloader = "0.2"
+indicatif = "0.17"
+log = "0.4"
+minreq = { version = "2", features = ["https"] }
+regex = "1"
+serde = { version = "1", default-features = false, features = ["derive", "std"] }
+serde_json = "1"
+simple_logger = { version = "5", default-features = false, features = ["colors"] }
+tempfile = "3"
+url = "2"
+zip = { version = "2", default-features = false, features = ["deflate"] }
 
 [target.'cfg(windows)'.dependencies]
-winreg = "~0.52.0"
+winreg = "0.52"
