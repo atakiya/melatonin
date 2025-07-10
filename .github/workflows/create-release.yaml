@@ -2,7 +2,7 @@ name: Create Release
 
 on:
   push:
-    tags: v*.*.**
+    tags: [v*.*.**]
   workflow_dispatch:
 
 jobs:
@@ -90,6 +90,9 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
+        name: Checkout Repository 📥
+
       - uses: actions/download-artifact@v4
         name: Download Artifacts ⬇️
         id: download_artifact
@@ -98,17 +101,9 @@ jobs:
           pattern: build-*
           merge-multiple: true
 
-      - uses: softprops/action-gh-release@d99959edae48b5ffffd7b00da66dcdb0a33a52ee
+      - uses: softprops/action-gh-release@72f2c25fcb47643c292f7107632f7a47c1df5cd8
         name: Create Release Draft 📝
-        id: create_release
         with:
+          files: ${{ steps.download_artifact.outputs.download-path }}/bvm*
           draft: true
           body_path: ${{ github.workspace }}/.github/CHANGELOG.md
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - uses: shogo82148/actions-upload-release-asset@c91b7fd867cf280772374042252f0dc8e1ade751
-        name: Upload binaries ⬆️📦
-        with:
-          asset_path: ${{ steps.download_artifact.outputs.download-path }}/bvm*
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
