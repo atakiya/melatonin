@@ -8,19 +8,24 @@ and this project adheres to
 
 ## [unreleased]
 
+## [0.9.0] - 2025-07-10
+
+### Added
+
+- `-m` / `--mirror` flag to use the https://spacestation13.github.io/byond-builds mirror (#12)
+
 ## [0.8.0] - 2025-04-23
 
 ### Added
 
 - `bvm prefix <VERSION>` command to display the install directory of the
-  specified version
+  specified version (#10)
 
 ### Changed
 
-- First installed version (while there is not other installed version) of BYOND
-  will be set as the default global version
-- `bvm uninstall <VERSION>` now accepts shorthand versions such as 'latest'
-- Dependencies tagged on major version where applicable
+- First installed version (while there is not other installed version) of BYOND will be set as the default global version (#10)
+- `bvm uninstall <VERSION>` now accepts shorthand versions such as 'latest' (#10)
+- Dependencies tagged on major version where applicable (#10)
 - Reordered commands in the help output
 
 ### Fixed
@@ -60,7 +65,8 @@ Now available at [ghcr.io/atakiya/melatonin](https://ghcr.io/atakiya/melatonin)
 - Pinning version per BYOND project
 - Shimming of CLI executables
 
-[unreleased]: https://github.com/atakiya/melatonin/compare/v0.8.0...HEAD
+[unreleased]: https://github.com/atakiya/melatonin/compare/v0.9.0...HEAD
+[0.9.0]: https://github.com/atakiya/melatonin/releases/tag/v0.9.0
 [0.8.0]: https://github.com/atakiya/melatonin/releases/tag/v0.8.0
 [0.7.8]: https://github.com/atakiya/melatonin/releases/tag/v0.7.8
 [0.7.7]: https://github.com/atakiya/melatonin/releases/tag/v0.7.7
