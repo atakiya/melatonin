@@ -4,9 +4,19 @@ on:
   push:
     branches:
       - main
+    paths:
+      - '**.rs'
+      - 'Cargo.lock'
+      - 'Cargo.toml'
+      - 'src/**'
   pull_request:
     branches:
       - main
+    paths:
+      - '**.rs'
+      - 'Cargo.lock'
+      - 'Cargo.toml'
+      - 'src/**'
   workflow_dispatch:
 
 env:
