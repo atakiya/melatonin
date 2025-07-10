@@ -1,14 +1,14 @@
 use anyhow::{anyhow, Result};
 use regex::Regex;
 
+use super::REQUEST_TIMEOUT;
 use crate::byondversion::ByondVersion;
 
 const BYOND_PAGER_URL: &str = "https://www.byond.com/PagerHome";
-const REQUEST_TIMEOUT: u64 = 10;
 const REGEXP_LATEST_VERSION: &str = r#"latest_version:\s+["'](?P<version>\d+)\.(?P<build>\d+)["'],?"#;
 const REGEXP_BETA_VERSION: &str = r#"beta_version:\s+["'](?P<version>\d+)\.(?P<build>\d+)["'],?"#;
 
-pub fn latest_version(beta: bool) -> Result<ByondVersion> {
+pub(super) fn latest_version(beta: bool) -> Result<ByondVersion> {
 	log::debug!(
 		"Attempting to fetch latest {} version of BYOND...",
 		if beta { "beta" } else { "stable" }

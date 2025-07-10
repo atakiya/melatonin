@@ -45,6 +45,10 @@ fn run() -> Result<()> {
 		.env()
 		.init()?;
 
+	if cli.mirror {
+		melatonin::set_mirror(true);
+	}
+
 	match cli.command {
 		Commands::Fetch { beta } => fetch::fetch(beta),
 		Commands::Install { version } => install::install(version),

@@ -5,6 +5,10 @@ use clap::{Parser, Subcommand};
 #[derive(Parser)]
 #[command(author, version, about, long_about = None)]
 pub(super) struct Cli {
+	/// Use spacestation13.github.io/byond-builds instead of byond.com.
+	#[arg(global = true, long, short)]
+	pub(super) mirror: bool,
+
 	#[command(flatten)]
 	pub(super) verbose: clap_verbosity_flag::Verbosity,
 

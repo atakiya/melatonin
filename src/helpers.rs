@@ -6,11 +6,17 @@ use url::Url;
 use crate::{byondversion::ByondVersion, errors, pagerdata};
 
 const BYOND_DOWNLOAD_BASEURL: &str = "https://www.byond.com/download/build/";
+const BYOND_DOWNLOAD_BASEURL_MIRROR: &str = "https://spacestation13.github.io/byond-builds/";
 const BYOND_DOWNLOAD_FILENAME_SUFFIX_WINDOWS: &str = "_byond.zip";
 const BYOND_DOWNLOAD_FILENAME_SUFFIX_LINUX: &str = "_byond_linux.zip";
 
 pub fn construct_download_url(byond_version: &ByondVersion) -> Result<Url> {
-	let url = Url::parse(BYOND_DOWNLOAD_BASEURL)?
+	let base_url = if crate::should_use_mirror() {
+		BYOND_DOWNLOAD_BASEURL_MIRROR
+	} else {
+		BYOND_DOWNLOAD_BASEURL
+	};
+	let url = Url::parse(base_url)?
 		.join(format!("{}/", byond_version.major).as_str())?
 		.join(format!("{}{}", byond_version, downloadurl_platform_suffix()?).as_str())?;
 	Ok(url)
