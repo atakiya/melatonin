@@ -1,7 +1,7 @@
 [package]
 name = "melatonin"
 description = "A version manager for the BYOND environment"
-version = "0.9.0"
+version = "0.9.1"
 license = "GPL-3.0-or-later"
 readme = "README.md"
 repository = "https://github.com/atakiya/melatonin/"
@@ -44,7 +44,7 @@ simple_logger = { version = "5", default-features = false, features = [
 ] }
 tempfile = "3"
 url = "2"
-zip = { version = "2", default-features = false, features = ["deflate"] }
+zip = { version = "4", default-features = false, features = ["deflate"] }
 
 [target.'cfg(windows)'.dependencies]
 winreg = "0.55"
